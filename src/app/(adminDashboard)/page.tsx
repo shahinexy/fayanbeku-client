@@ -1,9 +1,12 @@
-
+import RestaurantsTable from "@/components/modules/home/RestaurantsTable";
+import Navbar from "@/components/shared/Navbar";
 
 const CommonLayoutHomePage = () => {
   return (
     <div >
-      <h1>Home</h1>
+      <Navbar />
+
+      <RestaurantsTable />
     </div>
   );
 };

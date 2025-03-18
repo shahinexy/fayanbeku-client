@@ -93,7 +93,7 @@ const MyFormInput = ({
                   accept="image/*"
                   multiple={isMultiple}
                   className={cn(
-                    "w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 cursor-pointer",
+                    "w-full px-4 py-2 gradient-input rounded-md  cursor-pointer",
                     error ? "border-red-500" : "border-gray-300",
                     inputClassName
                   )}
@@ -128,7 +128,7 @@ const MyFormInput = ({
                 placeholder={placeholder}
                 rows={rows || 3} // Default to 3 rows if not provided
                 className={cn(
-                  "w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2",
+                  "w-full px-4 py-2 gradient-input rounded-md ",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}
@@ -179,7 +179,7 @@ const MyFormInput = ({
                     : type
                 }
                 className={cn(
-                  "w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2",
+                  "w-full px-4 py-2 gradient-input rounded-[12px] ",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}

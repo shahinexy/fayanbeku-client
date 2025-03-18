@@ -1,9 +1,9 @@
 import Image from "next/image";
 import logo from "../../../public/images/logo.png";
 import phone from "../../../public/images/demophone.png";
-import LoginForm from "@/components/modules/login/LoginForm";
+import EmailSenderForm from "@/components/modules/login/EmailSenderForm";
 
-export default function Page() {
+const ForgetPasswordPage = () => {
   return (
     <div className="max-w-[1280px] mx-auto h-screen px-5 pt-6 grid md:grid-cols-2 md:gap-28 gap-7 ">
       <div className="">
@@ -11,15 +11,14 @@ export default function Page() {
 
         <div className="md:my-8 my-5 space-y-3">
           <h1 className="md:text-3xl text-xl md:font-bold font-semibold">
-            Add / Remove New <span className="text-[#E97586]">Restaurants</span>{" "}
-            & Handle <span className="text-[#FFD02D]">Rewards</span>
+          Forgot Password
           </h1>
           <p className="text-[#A59F92]">
-            Add new restaurants for app users to enjoy.
+          Recover your account password
           </p>
         </div>
 
-        <LoginForm />
+        <EmailSenderForm />
       </div>
 
       <div className=" flex items-end ">
@@ -27,4 +26,6 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default ForgetPasswordPage;

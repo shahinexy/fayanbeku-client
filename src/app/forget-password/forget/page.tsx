@@ -1,6 +1,6 @@
 import Image from "next/image";
-import logo from "../../../public/images/logo.png";
-import phone from "../../../public/images/demophone.png";
+import logo from "../../../../public/images/logo.png";
+import phone from "../../../../public/images/demophone.png";
 import LoginForm from "@/components/modules/login/LoginForm";
 
 export default function Page() {
@@ -11,11 +11,10 @@ export default function Page() {
 
         <div className="md:my-8 my-5 space-y-3">
           <h1 className="md:text-3xl text-xl md:font-bold font-semibold">
-            Add / Remove New <span className="text-[#E97586]">Restaurants</span>{" "}
-            & Handle <span className="text-[#FFD02D]">Rewards</span>
+          Forgot Password
           </h1>
           <p className="text-[#A59F92]">
-            Add new restaurants for app users to enjoy.
+          Recover your account password
           </p>
         </div>
 
