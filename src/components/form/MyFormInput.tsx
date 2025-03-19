@@ -53,7 +53,7 @@ const MyFormInput = ({
   const { control, getValues, setValue } = useFormContext();
   const inputValue = useWatch({ control, name }) ?? ""; // Ensure no undefined value
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  // const [preview, setPreview] = useState<string | null>(null); // Preview for file input
+  const [preview, setPreview] = useState<string | null>(null); // Preview for file input
 
   useEffect(() => {
     if (onValueChange) {
@@ -72,7 +72,10 @@ const MyFormInput = ({
       {label && (
         <label
           htmlFor={name}
-          className={cn("text-sm font-medium", labelClassName)}
+          className={cn(
+            "md:text-2xl text-xl font-semibold mb-1",
+            labelClassName
+          )}
         >
           {label}
         </label>
@@ -100,26 +103,29 @@ const MyFormInput = ({
                   onChange={(e) => {
                     const files = e.target.files;
                     if (files) {
-                      // setValue(name, file);
                       if (isMultiple) {
-                        // If multiple files are allowed, store the array of files
                         setValue(name, Array.from(files));
+                        const firstFileUrl = URL.createObjectURL(files[0]);
+                        setPreview(firstFileUrl);
                       } else {
-                        // If only one file is allowed, store the first selected file
                         setValue(name, files[0]);
+                        const fileUrl = URL.createObjectURL(files[0]);
+                        setPreview(fileUrl);
                       }
                     }
                   }}
                 />
-                {/* {preview && (
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    width={100}
-                    height={100}
-                    className="rounded-md border"
-                  />
-                )} */}
+                {preview && (
+                  <div className="w-full flex justify-center">
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      width={100}
+                      height={100}
+                      className="rounded-md border"
+                    />
+                  </div>
+                )}
               </div>
             ) : type === "textarea" ? (
               <textarea

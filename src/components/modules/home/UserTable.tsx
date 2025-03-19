@@ -8,18 +8,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { FiEdit } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 
-const RestaurantsTable = () => {
+const UserTable = () => {
   return (
     <div className="bg-[#fff9f9] p-4 rounded-xl">
       <div className="flex gap-2 justify-between mb-3 items-center">
         <h3 className="md:text-2xl text-xl font-semibold">Restaurants</h3>
-        <Link href={"/restaurant/add"}>
-          <button className="px-8 py-2 bg-gradient-to-r from-[#E97586CC] to-[#FCD655CC] text-white rounded-lg">
-            + Add New
-          </button>
-        </Link>
       </div>
 
       <Table>
@@ -29,13 +24,13 @@ const RestaurantsTable = () => {
               Name
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
-              Location
+              Status
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
               Coin
             </TableHead>
             <TableHead className="text-right md:text-2xl text-xl font-medium text-black">
-              Edit
+              Receipts
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -45,10 +40,10 @@ const RestaurantsTable = () => {
             <TableCell>Paid</TableCell>
             <TableCell>Credit Card</TableCell>
             <TableCell className="text-center">
-              <Link href={"/restaurant/edit"}>
-                <button>
-                  <FiEdit className="text-lg text-gray-700" />
-                </button>
+              <Link href={'/receipts'}>
+              <button>
+                <FiEye className="text-lg text-gray-700" />
+              </button>
               </Link>
             </TableCell>
           </TableRow>
@@ -58,4 +53,4 @@ const RestaurantsTable = () => {
   );
 };
 
-export default RestaurantsTable;
+export default UserTable;

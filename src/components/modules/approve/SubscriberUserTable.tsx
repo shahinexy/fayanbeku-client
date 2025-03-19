@@ -7,35 +7,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Link from "next/link";
-import { FiEdit } from "react-icons/fi";
+import { MdDone, MdOutlineClose } from "react-icons/md";
 
-const RestaurantsTable = () => {
+const SubscriberUserTable = () => {
   return (
     <div className="bg-[#fff9f9] p-4 rounded-xl">
       <div className="flex gap-2 justify-between mb-3 items-center">
-        <h3 className="md:text-2xl text-xl font-semibold">Restaurants</h3>
-        <Link href={"/restaurant/add"}>
-          <button className="px-8 py-2 bg-gradient-to-r from-[#E97586CC] to-[#FCD655CC] text-white rounded-lg">
-            + Add New
-          </button>
-        </Link>
+        <h3 className="md:text-2xl text-xl font-semibold">Subscriber User</h3>
       </div>
 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px] md:text-2xl text-xl font-medium text-black">
-              Name
+            <TableHead className="md:text-2xl text-xl font-medium text-black">
+              User name
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
-              Location
+              E-mail
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
-              Coin
+              Code
             </TableHead>
-            <TableHead className="text-right md:text-2xl text-xl font-medium text-black">
-              Edit
+            <TableHead className="w-28 text-right md:text-2xl text-xl font-medium text-black">
+              Approval
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -44,12 +38,13 @@ const RestaurantsTable = () => {
             <TableCell className="">INV001</TableCell>
             <TableCell>Paid</TableCell>
             <TableCell>Credit Card</TableCell>
-            <TableCell className="text-center">
-              <Link href={"/restaurant/edit"}>
-                <button>
-                  <FiEdit className="text-lg text-gray-700" />
-                </button>
-              </Link>
+            <TableCell className="flex justify-between ">
+              <button>
+                <MdDone className="text-2xl text-gray-700" />
+              </button>
+              <button>
+                <MdOutlineClose className="text-2xl text-red-600" />
+              </button>
             </TableCell>
           </TableRow>
         </TableBody>
@@ -58,4 +53,4 @@ const RestaurantsTable = () => {
   );
 };
 
-export default RestaurantsTable;
+export default SubscriberUserTable;
