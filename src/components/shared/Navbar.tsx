@@ -24,15 +24,17 @@ const Navbar = () => {
             </button>
           </Link>
 
-          <div className="border  border-primary rounded-lg">
-            <div className="flex gap-3 px-5 py-2">
-              <FaRegUserCircle className="text-4xl" />
-              <div className="">
-                <p className="text-sm">Arik Lee</p>
-                <p className="font-medium text-sm">Admin</p>
+          <Link href={"/profile"}>
+            <div className="border  border-primary rounded-lg">
+              <div className="flex gap-3 px-5 py-2">
+                <FaRegUserCircle className="text-4xl" />
+                <div className="">
+                  <p className="text-sm">Arik Lee</p>
+                  <p className="font-medium text-sm">Admin</p>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

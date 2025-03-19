@@ -21,7 +21,7 @@ const Core10Page = () => {
         </div>
       </div>
 
-    <Core10Card />      
+      <Core10Card />
     </div>
   );
 };

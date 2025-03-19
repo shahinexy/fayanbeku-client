@@ -12,23 +12,24 @@ interface RadioOption {
 }
 
 interface MyFormInputProps {
-  type?: string; // Input type, defaults to "text"
-  name: string; // Field name for react-hook-form
-  label?: string; // Label text
-  onValueChange?: (value: string) => void; // Optional callback for value changes
-  placeholder?: string; // Optional placeholder text
-  required?: boolean; // Optional required validation, default is true
-  className?: string; // Custom className for input container
-  labelClassName?: string; // Custom className for label
-  inputClassName?: string; // Custom className for input
-  rows?: number; // Number of rows for textarea
-  radioOptions?: RadioOption[]; // Options for radio buttons
-  radioGroupClassName?: string; // Custom className for radio group parent
-  radioLabelClassName?: string; // Custom className for radio label
-  radioInputClassName?: string; // Custom className for radio input
-  radioImageClassName?: string; // Custom className for image
-  radioItemClassName?: string; // Custom className for radio items
+  type?: string;
+  name: string;
+  label?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  required?: boolean;
+  className?: string;
+  labelClassName?: string;
+  inputClassName?: string;
+  rows?: number;
+  radioOptions?: RadioOption[];
+  radioGroupClassName?: string;
+  radioLabelClassName?: string;
+  radioInputClassName?: string;
+  radioImageClassName?: string;
+  radioItemClassName?: string;
   isMultiple?: boolean;
+  disabled?: boolean; // 🔹 NEW: Disable field option
 }
 
 const MyFormInput = ({
@@ -49,11 +50,12 @@ const MyFormInput = ({
   radioImageClassName,
   radioItemClassName,
   isMultiple = false,
+  disabled = false, // 🔹 NEW: Default is false
 }: MyFormInputProps) => {
   const { control, getValues, setValue } = useFormContext();
-  const inputValue = useWatch({ control, name }) ?? ""; // Ensure no undefined value
+  const inputValue = useWatch({ control, name }) ?? "";
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null); // Preview for file input
+  const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (onValueChange) {
@@ -72,10 +74,7 @@ const MyFormInput = ({
       {label && (
         <label
           htmlFor={name}
-          className={cn(
-            "md:text-2xl text-xl font-semibold mb-1",
-            labelClassName
-          )}
+          className={cn("md:text-2xl text-xl font-semibold mb-1", labelClassName)}
         >
           {label}
         </label>
@@ -83,11 +82,10 @@ const MyFormInput = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={getValues(name) ?? radioOptions?.[0]?.value ?? ""} // Ensures controlled behavior
+        defaultValue={getValues(name) ?? radioOptions?.[0]?.value ?? ""}
         rules={required ? { required: `${label} is required` } : {}}
         render={({ field, fieldState: { error } }) => (
           <div className="relative">
-            {/* File Input Handling */}
             {type === "file" ? (
               <div className="flex flex-col gap-2">
                 <input
@@ -95,22 +93,23 @@ const MyFormInput = ({
                   id={name}
                   accept="image/*"
                   multiple={isMultiple}
+                  disabled={disabled} // 🔹 NEW: Disable file input
                   className={cn(
-                    "w-full px-4 py-2 gradient-input rounded-md  cursor-pointer",
+                    "w-full px-4 py-2 gradient-input rounded-md cursor-pointer",
+                    disabled ? "cursor-not-allowed opacity-50" : "",
                     error ? "border-red-500" : "border-gray-300",
                     inputClassName
                   )}
                   onChange={(e) => {
+                    if (disabled) return; // Prevent change if disabled
                     const files = e.target.files;
                     if (files) {
                       if (isMultiple) {
                         setValue(name, Array.from(files));
-                        const firstFileUrl = URL.createObjectURL(files[0]);
-                        setPreview(firstFileUrl);
+                        setPreview(URL.createObjectURL(files[0]));
                       } else {
                         setValue(name, files[0]);
-                        const fileUrl = URL.createObjectURL(files[0]);
-                        setPreview(fileUrl);
+                        setPreview(URL.createObjectURL(files[0]));
                       }
                     }
                   }}
@@ -132,13 +131,15 @@ const MyFormInput = ({
                 {...field}
                 id={name}
                 placeholder={placeholder}
-                rows={rows || 3} // Default to 3 rows if not provided
+                rows={rows || 3}
+                disabled={disabled} // 🔹 NEW: Disable textarea
                 className={cn(
-                  "w-full px-4 py-2 gradient-input rounded-md ",
+                  "w-full px-4 py-2 gradient-input rounded-md",
+                  disabled ? "cursor-not-allowed opacity-50" : "",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}
-                value={field.value ?? ""} // Ensures controlled component
+                value={field.value ?? ""}
               />
             ) : type === "radio" && radioOptions ? (
               <div className={cn("flex flex-col gap-2", radioGroupClassName)}>
@@ -147,6 +148,7 @@ const MyFormInput = ({
                     key={option.value}
                     className={cn(
                       "flex items-center gap-2",
+                      disabled ? "opacity-50 cursor-not-allowed" : "",
                       radioLabelClassName
                     )}
                   >
@@ -155,6 +157,7 @@ const MyFormInput = ({
                       type="radio"
                       value={option.value}
                       checked={field.value === option.value}
+                      disabled={disabled} // 🔹 NEW: Disable radio buttons
                       className={cn("form-radio", radioInputClassName)}
                     />
                     <div className={cn("flex gap-2", radioItemClassName)}>
@@ -177,40 +180,29 @@ const MyFormInput = ({
                 {...field}
                 id={name}
                 placeholder={placeholder}
-                type={
-                  type === "password"
-                    ? isPasswordVisible
-                      ? "text"
-                      : "password"
-                    : type
-                }
+                type={type === "password" ? (isPasswordVisible ? "text" : "password") : type}
+                disabled={disabled} // 🔹 NEW: Disable input fields
                 className={cn(
-                  "w-full px-4 py-2 gradient-input rounded-[12px] ",
+                  "w-full px-4 py-2 gradient-input rounded-[12px]",
+                  disabled ? "cursor-not-allowed opacity-50" : "",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}
-                value={field.value ?? ""} // Ensures controlled component
+                value={field.value ?? ""}
               />
             )}
-            {/* Password Toggle Button */}
             {type === "password" && (
               <button
                 type="button"
                 onClick={() => setIsPasswordVisible((prev) => !prev)}
                 className="absolute right-3 top-1/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                disabled={disabled} // 🔹 NEW: Disable password toggle button
               >
-                {isPasswordVisible ? (
-                  <HiEyeOff size={20} />
-                ) : (
-                  <HiEye size={20} />
-                )}
+                {isPasswordVisible ? <HiEyeOff size={20} /> : <HiEye size={20} />}
               </button>
             )}
-            {/* Validation Error Message */}
             <div className="h-4 mb-1">
-              {error && (
-                <small className="text-red-500 text-xs">{error.message}</small>
-              )}
+              {error && <small className="text-red-500 text-xs">{error.message}</small>}
             </div>
           </div>
         )}
