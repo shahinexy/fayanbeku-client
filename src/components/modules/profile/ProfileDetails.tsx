@@ -6,6 +6,7 @@ import MyFormWrapper from "@/components/form/MyFormWrapper";
 import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
 import { useState } from "react";
+import LogoutModal from "./LogoutModal";
 
 const ProfileDetails = () => {
   const [editing, setEditing] = useState<boolean>(false);
@@ -14,7 +15,9 @@ const ProfileDetails = () => {
   };
   return (
     <div>
-      <h3 className="md:text-2xl text-xl font-semibold mb-6">{editing ? 'Edit profile' : 'My profile'}</h3>
+      <h3 className="md:text-2xl text-xl font-semibold mb-6">
+        {editing ? "Edit profile" : "My profile"}
+      </h3>
       <div
         className={`${
           editing
@@ -185,9 +188,7 @@ const ProfileDetails = () => {
           editing ? "hidden" : "w-full flex justify-center mt-5 md:mt-8 gap-5"
         } `}
       >
-        <button className="bg-gradient-to-r from-[#E97586CC] to-[#FCD655CC] text-white md:w-2/5 py-3 rounded-lg">
-          Log out
-        </button>
+        <LogoutModal />
       </div>
     </div>
   );

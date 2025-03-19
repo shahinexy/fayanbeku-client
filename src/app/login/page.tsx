@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../../../public/images/logo.png";
 import phone from "../../../public/images/demophone.png";
-import LoginForm from "@/components/modules/login/LoginForm";
+import LoginForm from "@/components/modules/auth/LoginForm";
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../../../../public/images/logo.png";
 import phone from "../../../../public/images/demophone.png";
-import LoginForm from "@/components/modules/login/LoginForm";
+import LoginForm from "@/components/modules/auth/LoginForm";
 
 export default function Page() {
   return (
@@ -11,11 +11,9 @@ export default function Page() {
 
         <div className="md:my-8 my-5 space-y-3">
           <h1 className="md:text-3xl text-xl md:font-bold font-semibold">
-          Forgot Password
+            Forgot Password
           </h1>
-          <p className="text-[#A59F92]">
-          Recover your account password
-          </p>
+          <p className="text-[#A59F92]">Recover your account password</p>
         </div>
 
         <LoginForm />

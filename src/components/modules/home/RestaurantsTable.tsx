@@ -1,3 +1,4 @@
+'use client'
 "@/components/ui/table";
 import {
   Table,
@@ -7,10 +8,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetAllRestaurantQuery } from "@/redux/features/restaurant/rastaurant.api";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 
 const RestaurantsTable = () => {
+  const { data, isFetching } = useGetAllRestaurantQuery(undefined);
+console.log(data);
+  if (isFetching) {
+    return <p>Loadin...</p>;
+  }
+
   return (
     <div className="bg-[#fff9f9] p-4 rounded-xl">
       <div className="flex gap-2 justify-between mb-3 items-center">
