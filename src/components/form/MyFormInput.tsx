@@ -74,7 +74,10 @@ const MyFormInput = ({
       {label && (
         <label
           htmlFor={name}
-          className={cn("md:text-2xl text-xl font-semibold mb-1", labelClassName)}
+          className={cn(
+            "md:text-2xl text-xl font-semibold mb-1",
+            labelClassName
+          )}
         >
           {label}
         </label>
@@ -83,7 +86,15 @@ const MyFormInput = ({
         name={name}
         control={control}
         defaultValue={getValues(name) ?? radioOptions?.[0]?.value ?? ""}
-        rules={required ? { required: `${label} is required` } : {}}
+        rules={
+          required
+            ? {
+                required: `${
+                  label ? `${label} is required` : "This field is required"
+                }`,
+              }
+            : {}
+        }
         render={({ field, fieldState: { error } }) => (
           <div className="relative">
             {type === "file" ? (
@@ -119,9 +130,9 @@ const MyFormInput = ({
                     <Image
                       src={preview}
                       alt="Preview"
-                      width={100}
-                      height={100}
-                      className="rounded-md border"
+                      width={500}
+                      height={200}
+                      className="rounded-md border h-36 w-64"
                     />
                   </div>
                 )}
@@ -180,7 +191,13 @@ const MyFormInput = ({
                 {...field}
                 id={name}
                 placeholder={placeholder}
-                type={type === "password" ? (isPasswordVisible ? "text" : "password") : type}
+                type={
+                  type === "password"
+                    ? isPasswordVisible
+                      ? "text"
+                      : "password"
+                    : type
+                }
                 disabled={disabled} // 🔹 NEW: Disable input fields
                 className={cn(
                   "w-full px-4 py-2 gradient-input rounded-[12px]",
@@ -198,11 +215,17 @@ const MyFormInput = ({
                 className="absolute right-3 top-1/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 disabled={disabled} // 🔹 NEW: Disable password toggle button
               >
-                {isPasswordVisible ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                {isPasswordVisible ? (
+                  <HiEyeOff size={20} />
+                ) : (
+                  <HiEye size={20} />
+                )}
               </button>
             )}
             <div className="h-4 mb-1">
-              {error && <small className="text-red-500 text-xs">{error.message}</small>}
+              {error && (
+                <small className="text-red-500 text-xs">{error.message}</small>
+              )}
             </div>
           </div>
         )}

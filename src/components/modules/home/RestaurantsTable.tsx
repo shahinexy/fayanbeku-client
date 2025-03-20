@@ -1,5 +1,7 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 "@/components/ui/table";
+import Spinner from "@/components/common/Spinner";
 import {
   Table,
   TableBody,
@@ -14,9 +16,9 @@ import { FiEdit } from "react-icons/fi";
 
 const RestaurantsTable = () => {
   const { data, isFetching } = useGetAllRestaurantQuery(undefined);
-console.log(data);
+
   if (isFetching) {
-    return <p>Loadin...</p>;
+    return <div><Spinner/></div>;;
   }
 
   return (
@@ -33,7 +35,7 @@ console.log(data);
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px] md:text-2xl text-xl font-medium text-black">
+            <TableHead className=" md:text-2xl text-xl font-medium text-black">
               Name
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
@@ -48,18 +50,20 @@ console.log(data);
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-center">
-              <Link href={"/restaurant/edit"}>
-                <button>
-                  <FiEdit className="text-lg text-gray-700" />
-                </button>
-              </Link>
-            </TableCell>
-          </TableRow>
+          {data?.data?.map((item: any) => (
+            <TableRow key={item.id}>
+              <TableCell >{item?.name}</TableCell>
+              <TableCell>{item.location}</TableCell>
+              <TableCell>{item.coins}</TableCell>
+              <TableCell className="text-center">
+                <Link href={`/restaurant/edit/${item.id}`}>
+                  <button>
+                    <FiEdit className="text-lg text-gray-700" />
+                  </button>
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

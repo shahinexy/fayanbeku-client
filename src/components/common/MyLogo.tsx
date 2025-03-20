@@ -5,7 +5,7 @@ import Link from "next/link";
 const MyLogo = () => {
   return (
     <div className="md:mb-7 mb-5">
-      <Link href={"/"}>
+      <Link href={"/"} className="inline-block">
         <Image src={logo} height={80} width={150} alt="logo" />
       </Link>
     </div>

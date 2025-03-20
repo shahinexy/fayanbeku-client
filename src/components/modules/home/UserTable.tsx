@@ -1,4 +1,6 @@
-"@/components/ui/table";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import Spinner from "@/components/common/Spinner";
 import {
   Table,
   TableBody,
@@ -7,20 +9,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetAllUserQuery } from "@/redux/features/user/user.api";
 import Link from "next/link";
 import { FiEye } from "react-icons/fi";
 
 const UserTable = () => {
+  const { data, isFetching } = useGetAllUserQuery(undefined);
+ 
+  if (isFetching) {
+    return <div><Spinner/></div>;
+  }
   return (
     <div className="bg-[#fff9f9] p-4 rounded-xl">
       <div className="flex gap-2 justify-between mb-3 items-center">
-        <h3 className="md:text-2xl text-xl font-semibold">Restaurants</h3>
+        <h3 className="md:text-2xl text-xl font-semibold">Users</h3>
       </div>
 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px] md:text-2xl text-xl font-medium text-black">
+            <TableHead className=" md:text-2xl text-xl font-medium text-black">
               Name
             </TableHead>
             <TableHead className="md:text-2xl text-xl font-medium text-black">
@@ -35,18 +43,20 @@ const UserTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-center">
-              <Link href={'/receipts'}>
-              <button>
-                <FiEye className="text-lg text-gray-700" />
-              </button>
-              </Link>
-            </TableCell>
-          </TableRow>
+          {data?.data?.data?.map((user: any) => (
+            <TableRow key={user.id}>
+              <TableCell>{user.fullName}</TableCell>
+              <TableCell>{user.status}</TableCell>
+              <TableCell>{user.coins}</TableCell>
+              <TableCell className="text-center">
+                <Link href={"/receipts"}>
+                  <button>
+                    <FiEye className="text-lg text-gray-700" />
+                  </button>
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

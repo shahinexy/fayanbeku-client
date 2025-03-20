@@ -1,17 +1,63 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import MyBtn from "@/components/common/MyBtn";
+import Spinner from "@/components/common/Spinner";
 import MyFormInput from "@/components/form/MyFormInput";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
+import { useGetRestaurantQuery } from "@/redux/features/restaurant/rastaurant.api";
+import {
+  addRestaurantData,
+  IRestaurant,
+} from "@/redux/features/restaurant/rastaurantSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 
 const EditReataurantForm = () => {
+  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+
+  const { data, isFetching } = useGetRestaurantQuery(id);
+
+  const {
+    id: restaurantId,
+    avgRating,
+    openTime,
+    closeTime,
+    facilities,
+    coins,
+    image,
+    status,
+    reviews,
+    coreTen,
+    createdAt,
+    updatedAt,
+    ...restData
+  } = data?.data || {};
+
   const handleSubmit = (data: FieldValues) => {
     console.log(data);
+
+    const completedData = {...data, id: restaurantId}
+
+    dispatch(addRestaurantData(completedData as IRestaurant));
+
+    setIsAdded(true);
   };
+
+  if (isFetching) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div>
-      <MyFormWrapper onSubmit={handleSubmit}>
+      <MyFormWrapper onSubmit={handleSubmit} defaultValues={restData}>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <MyFormInput
@@ -26,12 +72,12 @@ const EditReataurantForm = () => {
             />
             <MyFormInput name="price" label="Price" placeholder="Write here" />
             <MyFormInput
-              name="accessibilityInclusion"
+              name="inclusion"
               label="Accessibility & inclusion"
               placeholder="Write here"
             />
             <MyFormInput
-              name="restaurantItems"
+              name="items"
               label="Restaurant Items"
               placeholder="Write here"
             />
@@ -39,7 +85,7 @@ const EditReataurantForm = () => {
 
           <div>
             <MyFormInput
-              name="payment"
+              name="payments"
               label="Payments"
               placeholder="Write here"
             />
@@ -58,12 +104,18 @@ const EditReataurantForm = () => {
           </div>
         </div>
         <div>
-          <Link
-            href={"/restaurant/edit/next-part"}
-            className="w-full flex justify-center md:mt-8 mt-5"
-          >
-            <MyBtn name="Next" width="md:w-2/5" />
-          </Link>
+          {isAdded ? (
+            <Link
+              href={`/restaurant/edit/next-part/${id}`}
+              className="w-full flex justify-center md:mt-8 mt-5"
+            >
+              <MyBtn name="Next" width="md:w-2/5" />
+            </Link>
+          ) : (
+            <div className="w-full flex justify-center md:mt-8 mt-5">
+              <MyBtn name="Add" width="md:w-2/5" />
+            </div>
+          )}
         </div>
       </MyFormWrapper>
     </div>
