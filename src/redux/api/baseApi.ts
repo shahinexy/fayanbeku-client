@@ -23,7 +23,7 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Restaurant"],
+  tagTypes: ["User", "Restaurant", "Media"],
   endpoints: (builder) => ({}),
 });
 

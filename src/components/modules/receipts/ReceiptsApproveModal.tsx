@@ -10,8 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateMediaMutation } from "@/redux/features/user/user.api";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 interface DeleteModalProps {
   id: string;
@@ -19,9 +21,44 @@ interface DeleteModalProps {
 
 const ReceiptsApproveModal = ({ id }: DeleteModalProps) => {
   const [open, setOpen] = useState(false);
+  const [updateUser] = useUpdateMediaMutation(undefined);
 
-  const handleSubmit = (data: FieldValues) => {
-    console.log(data);
+  console.log(id);
+
+  const handleSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Updating...");
+
+    const price = parseFloat(data.coins);
+    const coins = parseInt(data.quantity, 10);
+
+    if (isNaN(price) || price <= 0) {
+      toast.error("Invalid price. Please enter a valid number.");
+      return;
+    }
+
+    const modifedData = {
+      coins,
+      status: "APPROVED",
+    };
+    const modifiedData = {
+      id,
+      data: modifedData,
+    };
+
+    console.log(modifiedData);
+
+    try {
+      const res: any = await updateUser(modifiedData);
+      if (res.data) {
+        toast.success("Create Successfully", { id: toastId });
+      } else {
+        toast.error(res?.error?.data?.message || "Failed to Update", {
+          id: toastId,
+        });
+      }
+    } catch (err: any) {
+      toast.error(err.data?.message || "Failed to Update");
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -35,7 +72,7 @@ const ReceiptsApproveModal = ({ id }: DeleteModalProps) => {
             <div className="p-20 ">
               <MyFormWrapper onSubmit={handleSubmit} className="w-full">
                 <MyFormInput
-                  name="coin"
+                  name="coins"
                   label="Coin"
                   className="bg-transparent text-white"
                   inputClassName="!bg-transparent"

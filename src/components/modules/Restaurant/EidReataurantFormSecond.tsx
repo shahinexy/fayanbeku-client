@@ -62,8 +62,6 @@ const EidReataurantFormSecond = () => {
       facilities: getFacilities,
     };
 
-    // console.log(completedData);
-
     const formData = new FormData();
 
     if (data.image) {
@@ -180,7 +178,7 @@ const EidReataurantFormSecond = () => {
           </div>
 
           <div className="flex justify-center mt-4">
-            <DeleteModal id="" type="restaurent" />
+            <DeleteModal id={id as string} type="restaurent" btn="btn"/>
           </div>
         </div>
       </MyFormWrapper>

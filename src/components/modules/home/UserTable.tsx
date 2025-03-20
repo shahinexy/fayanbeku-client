@@ -9,15 +9,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAllUserQuery } from "@/redux/features/user/user.api";
+import { useGetAllMediaQuery } from "@/redux/features/user/user.api";
 import Link from "next/link";
 import { FiEye } from "react-icons/fi";
 
 const UserTable = () => {
-  const { data, isFetching } = useGetAllUserQuery(undefined);
- 
+  const { data, isFetching } = useGetAllMediaQuery(undefined);
+console.log(data);
   if (isFetching) {
-    return <div><Spinner/></div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
   return (
     <div className="bg-[#fff9f9] p-4 rounded-xl">
@@ -43,13 +47,13 @@ const UserTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.data?.data?.map((user: any) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.fullName}</TableCell>
-              <TableCell>{user.status}</TableCell>
-              <TableCell>{user.coins}</TableCell>
+          {data?.data?.map((data: any) => (
+            <TableRow key={data?.id}>
+              <TableCell>{data?.user?.fullName}</TableCell>
+              <TableCell>{data?.user?.coinStatus}</TableCell>
+              <TableCell>{data?.user?.coins}</TableCell>
               <TableCell className="text-center">
-                <Link href={"/receipts"}>
+                <Link href={`/receipts/${data?.id}`}>
                   <button>
                     <FiEye className="text-lg text-gray-700" />
                   </button>

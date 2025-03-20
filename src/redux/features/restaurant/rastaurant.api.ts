@@ -33,6 +33,7 @@ export const restaurantApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Restaurant"],
     }),
 
     updateRastaurant: builder.mutation({
@@ -41,6 +42,33 @@ export const restaurantApi = baseApi.injectEndpoints({
         method: "PUT",
         body: args.data,
       }),
+      invalidatesTags: ["Restaurant"],
+    }),
+
+    deleteRastaurant: builder.mutation({
+      query: (id) => ({
+        url: `/restaurant/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Restaurant"],
+    }),
+
+    coreRestaurent: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParams) =>
+            params.append(item.name, item.value as string)
+          );
+        }
+        return {
+          url: "/restaurant/core-ten",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["Restaurant"],
     }),
   }),
 });
@@ -50,4 +78,6 @@ export const {
   useGetRestaurantQuery,
   useCreateRastaurantMutation,
   useUpdateRastaurantMutation,
+  useDeleteRastaurantMutation,
+  useCoreRestaurentQuery,
 } = restaurantApi;
