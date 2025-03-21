@@ -7,17 +7,23 @@ import { useCreateRastaurantMutation } from "@/redux/features/restaurant/rastaur
 import { selectRestaurant } from "@/redux/features/restaurant/rastaurantSlice";
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { MdOutlineCancel } from "react-icons/md";
 import { toast } from "sonner";
 
 const AddReataurantFormSecond = () => {
+  const searchParam = useSearchParams();
   const [getFacilities, setFacilities] = useState<string[]>([]);
   const firstpartData = useAppSelector(selectRestaurant);
   const [createRestuarent] = useCreateRastaurantMutation();
 
+  // check if core 10
+  const from = searchParam.get("from");
+  console.log(from);
 
+  // remove Facilities
   const removeFacilities = (linkUrl: string) => {
     setFacilities((prevLinks) => {
       const updatedLinks = prevLinks.filter((link) => link !== linkUrl);
@@ -25,20 +31,28 @@ const AddReataurantFormSecond = () => {
     });
   };
 
-
+  // add Facilities
   const handleAddFacilities = (payload: FieldValues) => {
     if (payload.facilities) {
       setFacilities((prevLinks) => [...prevLinks, payload.facilities]);
     }
   };
 
+  // handle form
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Creating...");
+
+    let coreTen = false;
+
+    if (from === "core10") {
+      coreTen = true;
+    }
 
     const completeData = {
       ...firstpartData,
       ...data,
       facilities: getFacilities,
+      coreTen,
     };
 
     const formData = new FormData();
@@ -107,11 +121,7 @@ const AddReataurantFormSecond = () => {
               label="Restaurant Close"
               placeholder="Write here"
             />
-            <MyFormInput
-              name="facilities"
-              label="Other Facilities"
-              placeholder="Write here"
-            />
+
           </div>
 
           <div>

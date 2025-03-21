@@ -10,7 +10,9 @@ const Core10Page = () => {
         <MyLogo />
 
         <div className="inline-block">
-          <Link href={"/restaurant/add"}>
+          <Link
+            href={{ pathname: "/restaurant/add", query: { from: "core10" } }}
+          >
             <button
               className="bg-gradient-to-r from-[#E97586CC] to-[#FCD655CC] text-white px-12 py-3 rounded-lg
           "

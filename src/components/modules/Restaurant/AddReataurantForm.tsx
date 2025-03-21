@@ -9,13 +9,18 @@ import {
 } from "@/redux/features/restaurant/rastaurantSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 
 const AddReataurantForm = () => {
+  const searchParam = useSearchParams();
+  const from = searchParam.get("from");
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectRestaurant);
+
+  console.log(from);
 
   const handleSubmit = (data: FieldValues) => {
     dispatch(addRestaurantData(data as IRestaurant));
@@ -73,14 +78,17 @@ const AddReataurantForm = () => {
         <div>
           {isAdded ? (
             <Link
-              href={"/restaurant/add/next-part"}
+              href={{
+                pathname: "/restaurant/add/next-part",
+                query: { from: from },
+              }}
               className="w-full flex justify-center md:mt-8 mt-5"
             >
               <MyBtn name="Next" width="md:w-2/5" />
             </Link>
           ) : (
             <div className="w-full flex justify-center md:mt-8 mt-5">
-              <MyBtn name="Add" width="md:w-2/5" />
+              <button className="md:w-2/5 text-primary border-2 border-primary py-3">Add</button>
             </div>
           )}
         </div>

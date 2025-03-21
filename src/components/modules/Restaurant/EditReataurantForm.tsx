@@ -113,7 +113,7 @@ const EditReataurantForm = () => {
             </Link>
           ) : (
             <div className="w-full flex justify-center md:mt-8 mt-5">
-              <MyBtn name="Add" width="md:w-2/5" />
+              <button className="md:w-2/5 text-primary border-2 border-primary py-3">Add</button>
             </div>
           )}
         </div>
