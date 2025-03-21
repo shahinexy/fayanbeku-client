@@ -152,6 +152,7 @@ const EidReataurantFormSecond = () => {
             <MyFormInput
               name="image"
               label="Add Photo"
+              required={false}
               type="file"
               placeholder="Write here"
             />

@@ -18,7 +18,11 @@ const RestaurantsTable = () => {
   const { data, isFetching } = useGetAllRestaurantQuery(undefined);
 
   if (isFetching) {
-    return <div><Spinner/></div>;;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -52,7 +56,7 @@ const RestaurantsTable = () => {
         <TableBody>
           {data?.data?.map((item: any) => (
             <TableRow key={item.id}>
-              <TableCell >{item?.name}</TableCell>
+              <TableCell>{item?.name}</TableCell>
               <TableCell>{item.location}</TableCell>
               <TableCell>{item.coins}</TableCell>
               <TableCell className="text-center">

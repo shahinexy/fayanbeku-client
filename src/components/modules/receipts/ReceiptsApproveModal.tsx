@@ -23,16 +23,15 @@ const ReceiptsApproveModal = ({ id }: DeleteModalProps) => {
   const [open, setOpen] = useState(false);
   const [updateUser] = useUpdateMediaMutation(undefined);
 
-  console.log(id);
-
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Updating...");
 
-    const price = parseFloat(data.coins);
-    const coins = parseInt(data.quantity, 10);
+    const coins = parseInt(data.coins, 10);
 
-    if (isNaN(price) || price <= 0) {
-      toast.error("Invalid price. Please enter a valid number.");
+    if (isNaN(coins) || coins <= 0) {
+      toast.error("Please enter a valid number.", {
+        id: toastId,
+      });
       return;
     }
 
@@ -44,8 +43,6 @@ const ReceiptsApproveModal = ({ id }: DeleteModalProps) => {
       id,
       data: modifedData,
     };
-
-    console.log(modifiedData);
 
     try {
       const res: any = await updateUser(modifiedData);

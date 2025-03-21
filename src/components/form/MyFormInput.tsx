@@ -104,7 +104,7 @@ const MyFormInput = ({
                   id={name}
                   accept="image/*"
                   multiple={isMultiple}
-                  disabled={disabled} // 🔹 NEW: Disable file input
+                  disabled={disabled} // 🔹 
                   className={cn(
                     "w-full px-4 py-2 gradient-input rounded-md cursor-pointer",
                     disabled ? "cursor-not-allowed opacity-50" : "",
@@ -112,7 +112,7 @@ const MyFormInput = ({
                     inputClassName
                   )}
                   onChange={(e) => {
-                    if (disabled) return; // Prevent change if disabled
+                    if (disabled) return; 
                     const files = e.target.files;
                     if (files) {
                       if (isMultiple) {

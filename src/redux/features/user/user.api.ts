@@ -21,6 +21,24 @@ export const restaurantApi = baseApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
+    updateUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/profile`,
+        method: "PUT",
+        body: id,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    updateUserStatus: builder.mutation({
+      query: (args) => ({
+        url: `/users/${args.id}`,
+        method: "PUT",
+        body: args.data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
     getAllMedia: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -51,11 +69,18 @@ export const restaurantApi = baseApi.injectEndpoints({
       query: (args) => ({
         url: `/media/${args.id}`,
         method: "PUT",
-        body: args.data
+        body: args.data,
       }),
-      invalidatesTags: ['Media']
+      invalidatesTags: ["Media"],
     }),
   }),
 });
 
-export const { useGetAllUserQuery, useGetmediaQuery, useGetAllMediaQuery, useUpdateMediaMutation } = restaurantApi;
+export const {
+  useGetAllUserQuery,
+  useUpdateUserMutation,
+  useUpdateUserStatusMutation,
+  useGetmediaQuery,
+  useGetAllMediaQuery,
+  useUpdateMediaMutation,
+} = restaurantApi;

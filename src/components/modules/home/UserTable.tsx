@@ -12,10 +12,11 @@ import {
 import { useGetAllMediaQuery } from "@/redux/features/user/user.api";
 import Link from "next/link";
 import { FiEye } from "react-icons/fi";
+import { GoDotFill } from "react-icons/go";
 
 const UserTable = () => {
   const { data, isFetching } = useGetAllMediaQuery(undefined);
-console.log(data);
+
   if (isFetching) {
     return (
       <div>
@@ -52,12 +53,18 @@ console.log(data);
               <TableCell>{data?.user?.fullName}</TableCell>
               <TableCell>{data?.user?.coinStatus}</TableCell>
               <TableCell>{data?.user?.coins}</TableCell>
-              <TableCell className="text-center">
+              <TableCell className=" flex justify-end gap-5">
                 <Link href={`/receipts/${data?.id}`}>
                   <button>
                     <FiEye className="text-lg text-gray-700" />
                   </button>
                 </Link>
+
+                <div
+                  className={`${data.status === "REJECTED" ? "" : "hidden"}`}
+                >
+                  <GoDotFill className="text-red-500 text-2xl" />
+                </div>
               </TableCell>
             </TableRow>
           ))}

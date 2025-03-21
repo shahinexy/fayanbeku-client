@@ -11,7 +11,9 @@ const Navbar = () => {
   return (
     <div className="flex justify-between items-center md:mb-7 mb-4">
       <div className="">
-        <Image src={logo} height={80} width={150} alt="logo" />
+        <Link href={"/"} className="inline-block">
+          <Image src={logo} height={80} width={150} alt="logo" />
+        </Link>
       </div>
 
       <div>
@@ -30,13 +32,14 @@ const Navbar = () => {
           {data ? (
             <Link href={"/profile"}>
               <div className="border  border-primary rounded-lg">
-                <div className="flex gap-3 px-5 py-2">
+                <div className="flex gap-3 px-5 py-[5px]">
                   {data?.data?.profileImage ? (
                     <Image
                       src={data?.data?.profileImage}
                       height={80}
                       width={150}
                       alt="logo"
+                      className="h-10 w-10"
                     />
                   ) : (
                     <FaRegUserCircle className="text-4xl" />

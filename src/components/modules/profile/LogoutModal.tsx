@@ -6,11 +6,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { logout } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { removeCookie } from "@/utils/cookies";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 const LogoutModal = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleLolgout = () => {
+    console.log('logout');
+    dispatch(logout());
+    removeCookie("token");
+    router.push("/login");
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -33,6 +46,7 @@ const LogoutModal = () => {
               </div>
               <div className="flex md:gap-5 gap-3">
                 <button
+                  onClick={handleLolgout}
                   className="border border-primary text-primary py-3 px-6 rounded-lg font-normal"
                 >
                   Log Out

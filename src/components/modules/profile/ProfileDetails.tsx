@@ -1,18 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
-import logo from "../../../../public/images/demophone.png";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
 import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
+import { useGetMeQuery } from "@/redux/features/auth/authApi";
+import Spinner from "@/components/common/Spinner";
+import { FaRegUserCircle } from "react-icons/fa";
+import { toast } from "sonner";
+import { useUpdateUserMutation } from "@/redux/features/user/user.api";
 
 const ProfileDetails = () => {
   const [editing, setEditing] = useState<boolean>(false);
-  const handleSubmit = (data: FieldValues) => {
-    console.log(data);
+  const { data, isFetching } = useGetMeQuery(undefined);
+  const [updateUser] = useUpdateUserMutation();
+
+  const userData = data?.data;
+
+  const handleSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Updating...");
+
+    const formData = new FormData();
+
+    if (data.profileImage) {
+      formData.append("image", data.profileImage);
+    }
+
+    formData.append("data", JSON.stringify(data));
+
+    // console.log("inside formdata", Object.fromEntries(formData));
+
+    try {
+      const res: any = await updateUser(formData);
+      if (res.data) {
+        toast.success("Updated Successfully", { id: toastId });
+      } else {
+        toast.error(res?.error?.data?.message || "Failed to Update", {
+          id: toastId,
+        });
+      }
+    } catch (err: any) {
+      toast.error(err.data?.message || "Failed to Update");
+    }
   };
+
+  if (isFetching) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div>
       <h3 className="md:text-2xl text-xl font-semibold mb-6">
@@ -26,25 +67,32 @@ const ProfileDetails = () => {
         }`}
       >
         <div className="flex gap-3 items-center">
-          <Image
-            src={logo}
-            alt="profile"
-            width={70}
-            height={70}
-            className="h-[60px] w-[60px] rounded-full"
-          />
-          <div className="">
-            <h3 className="md:text-2xl text-xl font-medium">Johan Smith</h3>
-            <p className="text-xl">Anarose manager</p>
+          {userData?.profileImage ? (
+            <Image
+              src={userData?.profileImage}
+              alt="profile"
+              width={70}
+              height={70}
+              className="h-[60px] w-[60px] rounded-full"
+            />
+          ) : (
+            <FaRegUserCircle className="text-[60px]" />
+          )}
+
+          <div>
+            <h3 className="md:text-2xl text-xl font-medium">
+              {userData?.fullName}
+            </h3>
+            <p className="text-xl">{userData?.role}</p>
           </div>
         </div>
 
         <div className="">
           <div className="flex gap-2 items-center md:text-xl">
-            <CiLocationOn className="text-2xl" /> 27 Oak Street, Manchester
+            <CiLocationOn className="text-2xl" /> {userData?.address}
           </div>
           <div className="flex gap-2 items-center md:text-xl">
-            <CiMail className="text-2xl" /> adojs@maildrop.com
+            <CiMail className="text-2xl" /> {userData?.email}
           </div>
         </div>
 
@@ -63,20 +111,12 @@ const ProfileDetails = () => {
           Personal Information
         </h3>
 
-        <MyFormWrapper onSubmit={handleSubmit}>
+        <MyFormWrapper onSubmit={handleSubmit} defaultValues={userData}>
           <div className="grid md:grid-cols-3 grid-cols-1 gap-5">
             <div>
-              <p className="md:text-xl mb-1">First Name</p>
+              <p className="md:text-xl mb-1">Full Name</p>
               <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
-            <div>
-              <p className="md:text-xl mb-1">Last Name</p>
-              <MyFormInput
-                name="name"
+                name="fullName"
                 disabled={!editing}
                 inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
               />
@@ -84,80 +124,56 @@ const ProfileDetails = () => {
             <div>
               <p className="md:text-xl mb-1">Your Email</p>
               <MyFormInput
-                name="name"
-                disabled={!editing}
+                name="email"
+                type="email"
+                disabled
                 inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
               />
             </div>
             <div>
-              <p className="md:text-xl mb-1">Your Phonr Number</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
+              <div>
+                <p className="md:text-xl mb-1">Your Phonr Number</p>
+                <MyFormInput
+                  name="phone"
+                  disabled={!editing}
+                  inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
+                />
+              </div>
             </div>
-            <div className="md:col-span-2">
-              <p className="md:text-xl mb-1">Profile Picture</p>
-              <MyFormInput
-                name="name"
-                type="file"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
-            {/* //border  */}
-            <div className="md:col-span-3 md:text-2xl text-xl font-semibold border-t pt-5">
-              Address
-            </div>
+          </div>
 
-            <div>
-              <p className="md:text-xl mb-1">Country</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
-            <div>
-              <p className="md:text-xl mb-1">City</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
-            <div>
-              <p className="md:text-xl mb-1">State</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
-            <div>
-              <p className="md:text-xl mb-1">Area</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
-            </div>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
             <div>
               <p className="md:text-xl mb-1">Address</p>
               <MyFormInput
-                name="name"
+                name="address"
                 disabled={!editing}
                 inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
               />
             </div>
-            <div>
-              <p className="md:text-xl mb-1">Apt no</p>
-              <MyFormInput
-                name="name"
-                disabled={!editing}
-                inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
-              />
+
+            <div className="">
+              <p className="md:text-xl mb-1">Profile Picture</p>
+              {userData?.profileImage && !editing ? (
+                <div className="flex justify-center bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] p-2 rounded-lg">
+                  <Image
+                    src={userData?.profileImage}
+                    alt="profile"
+                    width={300}
+                    height={150}
+                    className="h-[150px] w-[300px] rounded-full"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <MyFormInput
+                    name="profileImage"
+                    type="file"
+                    disabled={!editing}
+                    inputClassName="!bg-gradient-to-t from-[#fce3ca] to-[#f8d0d3] !border-0 !rounded-lg"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
