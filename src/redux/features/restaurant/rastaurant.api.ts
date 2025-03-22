@@ -25,6 +25,7 @@ export const restaurantApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/restaurant/${id}`,
       }),
+      providesTags: ["Restaurant"],
     }),
 
     createRastaurant: builder.mutation({

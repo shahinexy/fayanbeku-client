@@ -25,7 +25,7 @@ const EidReataurantFormSecond = () => {
   const [getFacilities, setFacilities] = useState<string[]>([]);
   const firstpartData = useAppSelector(selectRestaurant);
   const [updateRestaurant] = useUpdateRastaurantMutation();
-
+  console.log(firstpartData);
   const formFieldNames = ["openTime", "closeTime", "coins", "image"];
 
   const slicedData = Object.fromEntries(
@@ -56,10 +56,20 @@ const EidReataurantFormSecond = () => {
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Updating...");
 
+    const coins = parseInt(data.coins, 10);
+
+    if (isNaN(coins)) {
+      toast.error("Please enter a valid OTP", {
+        id: toastId,
+      });
+      return;
+    }
+
     const completedData = {
       ...firstpartData,
       ...data,
       facilities: getFacilities,
+      coins,
     };
 
     const formData = new FormData();
@@ -179,7 +189,7 @@ const EidReataurantFormSecond = () => {
           </div>
 
           <div className="flex justify-center mt-4">
-            <DeleteModal id={id as string} type="restaurent" btn="btn"/>
+            <DeleteModal id={id as string} type="restaurent" btn="btn" />
           </div>
         </div>
       </MyFormWrapper>

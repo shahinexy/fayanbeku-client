@@ -21,5 +21,19 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [],
+  matcher: [
+    "/",
+    "/approve",
+    "/core10",
+    "/profile",
+    "/receipts",
+    "/receipts/:id",
+    "/restaurant",
+    "/restaurant/add",
+    "/restaurant/add/next-part",
+    "/restaurant/edit",
+    "/restaurant/edit/:id",
+    "/restaurant/edit/next-part",
+    "/restaurant/edit/next-part/:id",
+  ],
 };
