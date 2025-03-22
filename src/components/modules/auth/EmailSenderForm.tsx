@@ -21,7 +21,7 @@ const EmailSenderForm = () => {
       if (res.data) {
         toast.success("OTP send Successfully", { id: toastId });
 
-        router.push('/forget-password/verify-otp')
+        router.push('/forget-password/verify')
       } else {
         toast.error(res?.error?.data?.message || "Failed to send", {
           id: toastId,

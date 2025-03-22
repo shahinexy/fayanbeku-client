@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../../../../public/images/logo.png";
 import phone from "../../../../public/images/demophone.png";
-import LoginForm from "@/components/modules/auth/LoginForm";
+import ForgetPassForm from "@/components/modules/auth/ForgetPassForm";
 
 export default function Page() {
   return (
@@ -16,7 +16,7 @@ export default function Page() {
           <p className="text-[#A59F92]">Recover your account password</p>
         </div>
 
-        <LoginForm />
+        <ForgetPassForm />
       </div>
 
       <div className=" flex items-end ">
